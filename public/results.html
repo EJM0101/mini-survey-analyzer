@@ -11,7 +11,16 @@
     <h1 class="mb-4 text-center">📊 Résultats du sondage</h1>
     <div id="charts"></div>
   </div>
+
+  <!-- Charger Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Charger app.js une fois Chart.js chargé -->
   <script src="app.js"></script>
+  <script>
+    window.onload = function() {
+      initResults();
+    };
+  </script>
 </body>
 </html>
