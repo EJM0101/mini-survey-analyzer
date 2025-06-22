@@ -1,0 +1,8 @@
+{
+  "name": "mini-survey-analyzer",
+  "version": "1.0.0",
+  "description": "Mini Survey Analyzer - Création de sondages simples avec analyse instantanée des résultats",
+  "main": "server/app.js",
+  "scripts": { "start": "node server/app.js" },
+  "dependencies": { "express": "^4.18.2", "body-parser": "^1.20.2" }
+}
