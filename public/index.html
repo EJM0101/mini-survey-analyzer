@@ -3,23 +3,38 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Mini Survey Analyzer - Création de sondage</title>
+  <title>Mini Survey Analyzer - Générateur IA</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container py-5">
-    <h1 class="mb-4 text-center">📊 Mini Survey Analyzer</h1>
-    <p class="text-center mb-4">Créez votre sondage et partagez-le facilement.</p>
-    <form id="createForm" class="mb-5">
-      <div id="questionsContainer">
-        <div class="mb-3"><label>Question 1</label><input type="text" name="question" class="form-control" required></div>
-        <div class="mb-3"><label>Question 2</label><input type="text" name="question" class="form-control" required></div>
-        <div class="mb-3"><label>Question 3</label><input type="text" name="question" class="form-control" required></div>
+    <h1 class="mb-4 text-center">📊 Mini Survey Analyzer (IA)</h1>
+
+    <div class="alert alert-info">
+      <h5>🧠 Fonction pédagogique :</h5>
+      <ul>
+        <li>Générer automatiquement un questionnaire d’enquête à partir de votre sujet de recherche.</li>
+        <li>Collecter les réponses des participants.</li>
+        <li>Afficher automatiquement les résultats sous forme de graphiques simples (statistiques descriptives).</li>
+      </ul>
+    </div>
+
+    <form id="createForm">
+      <div class="mb-3">
+        <label for="theme" class="form-label">Entrez votre sujet de recherche :</label>
+        <input type="text" id="theme" class="form-control" placeholder="Ex: Éducation numérique en milieu rural" required>
       </div>
-      <button type="submit" class="btn btn-success w-100">Créer le sondage</button>
+      <button type="submit" class="btn btn-success w-100">Générer le questionnaire</button>
     </form>
+
+    <div id="linkBox" class="mt-4 d-none">
+      <label for="surveyLink" class="form-label">Lien de votre sondage :</label>
+      <input id="surveyLink" class="form-control mb-2" readonly>
+      <button id="copyBtn" class="btn btn-primary w-100">Copier le lien</button>
+    </div>
   </div>
+
   <script src="app.js"></script>
 </body>
 </html>
