@@ -1,7 +1,7 @@
 const url = new URL(window.location.href);
 const surveyId = url.searchParams.get("id");
 
-// Génération du questionnaire avec IA (création du sondage)
+// Partie création du sondage (index.html)
 if (window.location.pathname.endsWith("index.html") || window.location.pathname === "/") {
   const form = document.getElementById("createForm");
   form?.addEventListener("submit", async (e) => {
@@ -14,7 +14,7 @@ if (window.location.pathname.endsWith("index.html") || window.location.pathname 
     });
     const data = await res.json();
 
-    // Afficher lien partageable
+    // Afficher le lien du sondage
     const link = `${window.location.origin}/survey.html?id=${data.id}`;
     document.getElementById("linkBox").classList.remove("d-none");
     document.getElementById("surveyLink").value = link;
@@ -25,7 +25,7 @@ if (window.location.pathname.endsWith("index.html") || window.location.pathname 
   });
 }
 
-// Remplissage du sondage
+// Partie répondre au sondage (survey.html)
 if (window.location.pathname.includes("survey.html") && surveyId) {
   fetch(`/survey/${surveyId}`).then(res => res.json()).then(data => {
     const form = document.getElementById("surveyForm");
@@ -34,7 +34,9 @@ if (window.location.pathname.includes("survey.html") && surveyId) {
       div.className = "mb-3";
       div.innerHTML = `<label>Q${idx + 1}: ${q}</label>
         <select class="form-select" name="q${idx}" required>
-          <option value="">Choisir</option><option value="Oui">Oui</option><option value="Non">Non</option>`;
+          <option value="">Choisir</option>
+          <option value="Oui">Oui</option>
+          <option value="Non">Non</option>`;
       form.appendChild(div);
     });
     const btn = document.createElement("button");
@@ -57,22 +59,35 @@ if (window.location.pathname.includes("survey.html") && surveyId) {
   });
 }
 
-// Affichage des résultats
-if (window.location.pathname.includes("results.html") && surveyId) {
-  fetch(`/survey/${surveyId}/results`).then(res => res.json()).then(data => {
-    const chartsDiv = document.getElementById("charts");
-    data.questions.forEach((q, idx) => {
-      const count = data.counts[idx];
-      const canvas = document.createElement("canvas");
-      chartsDiv.appendChild(canvas);
-      new Chart(canvas, {
-        type: 'pie',
-        data: {
-          labels: ['Oui', 'Non'],
-          datasets: [{ data: [count.Oui, count.Non], backgroundColor: ['#4CAF50', '#F44336'] }]
-        },
-        options: { plugins: { title: { display: true, text: q } } }
-      });
+// Partie résultats (results.html)
+async function initResults() {
+  const url = new URL(window.location.href);
+  const surveyId = url.searchParams.get("id");
+  const response = await fetch(`/survey/${surveyId}/results`);
+  const data = await response.json();
+
+  const chartsDiv = document.getElementById("charts");
+
+  // Vérifie s'il y a des réponses
+  if (!data.counts || data.counts.length === 0 || data.counts[0].Oui + data.counts[0].Non === 0) {
+    chartsDiv.innerHTML = "<div class='alert alert-warning'>Aucune réponse enregistrée pour ce sondage pour l’instant.</div>";
+    return;
+  }
+
+  // Générer les graphiques
+  data.questions.forEach((q, idx) => {
+    const count = data.counts[idx];
+    const canvas = document.createElement("canvas");
+    chartsDiv.appendChild(canvas);
+    new Chart(canvas, {
+      type: 'pie',
+      data: {
+        labels: ['Oui', 'Non'],
+        datasets: [{ data: [count.Oui, count.Non], backgroundColor: ['#4CAF50', '#F44336'] }]
+      },
+      options: {
+        plugins: { title: { display: true, text: q } }
+      }
     });
   });
 }
