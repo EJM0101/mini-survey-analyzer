@@ -13,7 +13,7 @@ Permet aux étudiants de créer des **mini-questionnaires quantitatifs** et de v
 - Déploiement direct via Render
 ## ⚙️ Installation locale
 ```bash
-git clone https://github.com/votre-nom/mini-survey-analyzer.git
+git clone https://github.com/EJM0101/mini-survey-analyzer.git
 cd mini-survey-analyzer
 npm install
 npm start
